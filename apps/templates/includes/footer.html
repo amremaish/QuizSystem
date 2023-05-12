@@ -1,0 +1,52 @@
+<div class="modal fade" id="error_modal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Your attention is required</h5>
+                <button type="button" class="close-btn btn-close text-dark" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="py-3 text-center">
+                    <i class="ni ni-bell-55 ni-3x"></i>
+                    <h4 class="text-gradient text-danger mt-4">
+                        Error while executing the last operation
+                    </h4>
+                    <p> {% if request.GET.error %}
+                        <div>{{ request.GET.error }}</div> {% endif %} </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close-btn btn btn-link  ml-auto" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id=_modal></div>
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+    <script>
+        function removeParam(key, sourceURL) {
+            var rtn = sourceURL.split("?")[0],
+                param,
+                params_arr = [],
+                queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+            if (queryString !== "") {
+                params_arr = queryString.split("&");
+                for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                    param = params_arr[i].split("=")[0];
+                    if (param === key) {
+                        params_arr.splice(i, 1);
+                    }
+                }
+                if (params_arr.length) rtn = rtn + "?" + params_arr.join("&");
+            }
+            return rtn;
+        }
+    </script>
+        <script src="/static/assets/js/app/modals.js"></script>
+{% endblock javascripts %}

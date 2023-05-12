@@ -1,0 +1,144 @@
+<!-- Create Language Modal -->
+
+<div class="modal fade " id="create_question_modal" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Question</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/admin/questions/create-update/" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Category</label>
+                        <select style="width: 100%;" class="select2 form-control" name="category"
+                                id="category_id">
+                            {% for item in categories %}
+                                <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Description</label>
+                        <textarea type="text" required name="description" class="form-control border-0 ="
+                                  rows="4" placeholder="Type here..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 1</label>
+                        <input type="text" name="choice_1" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 2</label>
+                        <input type="text" name="choice_2" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 3</label>
+                        <input type="text" name="choice_3" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 4</label>
+                        <input type="text" name="choice_4" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label"></label>
+                        <select style="width: 100%;" class="select2 form-control" name="answer_number">
+                            <option value="1">Choice 1</option>
+                            <option value="2">Choice 2</option>
+                            <option value="3">Choice 3</option>
+                            <option value="4">Choice 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn bg-gradient-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update_question_modal" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Country</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/admin/questions/create-update/" method="post">
+                <input hidden name="id" id="question_id">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Category</label>
+                        <select style="width: 100%;" class="select2 form-control" name="category"
+                                id="category_id">
+                            {% for item in categories %}
+                                <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Description</label>
+                        <textarea type="text" required id="description" name="description" class="form-control border-0 ="
+                                  rows="4" placeholder="Type here..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 1</label>
+                        <input type="text" id="choice_1" name="choice_1" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 2</label>
+                        <input type="text" id="choice_2" name="choice_2" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 3</label>
+                        <input type="text" id="choice_3" name="choice_3" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label">Choice 4</label>
+                        <input type="text" id="choice_4" name="choice_4" required class="form-control border-0 ="
+                               placeholder="Type here...">
+                    </div>
+                    <div class="form-group">
+                        <label for="example-time-input" class="form-control-label"></label>
+                        <select style="width: 100%;" class="select2 form-control" name="answer_number" id="answer_number">
+                            <option value="1">Choice 1</option>
+                            <option value="2">Choice 2</option>
+                            <option value="3">Choice 3</option>
+                            <option value="4">Choice 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn bg-gradient-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
