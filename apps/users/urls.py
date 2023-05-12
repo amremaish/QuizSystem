@@ -20,5 +20,5 @@ from apps.users.views import *
 urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('restaurants/', UsersView.as_view(), name='restaurants'),
+    path('users/', UsersView.as_view(), name='users'),
 ]

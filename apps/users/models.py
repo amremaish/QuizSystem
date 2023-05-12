@@ -20,6 +20,7 @@ class AppUserManager(BaseUserManager):
             # date_of_birth=NULL,
         )
         user.username = email
+        user.is_admin = True
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -45,6 +46,7 @@ class User(TimeStampedModel, AbstractBaseUser):
     id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(max_length=128, unique=True, db_index=True)
+    is_admin = models.BooleanField(default=False)
     password = models.CharField(max_length=128, null=False, blank=False)
     objects = AppUserManager()
 
