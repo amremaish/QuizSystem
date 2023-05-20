@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet"/>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet"/>
+    <link id="pagestyle" href="/static/assets/css/soft-ui-dashboard.css?v=1.0.0" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="/static/assets/index/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/static/assets/index/css/login.css">
+        <link rel="stylesheet" href="/static/assets/index/css/login_style.css">
+        <link rel="stylesheet" href="/static/assets/index/css/styles.css">
+    {% endblock stylesheets %}
+    <title>Login #6</title>
+</head>
+<body>
+<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2"
+         style="background-image: url('/static/assets/index/assets/img/bg_login.jpg');"></div>
+    <div class="contents order-2 order-md-1">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-7">
+                    <div id="sign_in_div">
+                        <div class="mb-4">
+                            <h3>Sign In</h3>
+                        </div>
+                        {% csrf_token %}
+                        <div class="form-group first">
+                            <label for="in_email">Email</label>
+                            <input type="text" required class="form-control" id="in_email">
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="password">Password</label>
+                            <input type="password" required class="form-control" id="in_pass">
+                        </div>
+                        <div class="d-flex mb-5 mt-2 align-items-center">
+                            <span class="ml-auto"><a href="javascript:;" id="sign_up"
+                                                     class="forgot-pass">New account ?</a></span>
+                        </div>
+                        <input type="submit" id="submit_in" value="Log In" class="btn btn-block btn-primary">
+                    </div>
+
+                    <div id="sign_up_div" style="display: none;">
+                        <div class="mb-4">
+                            <h3>Sign Up</h3>
+                        </div>
+                        <div class="form-group first">
+                            <label for="up_email">Email</label>
+                            <input type="text" required class="form-control" id="up_email">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password">Password</label>
+                            <input type="password" required class="form-control" id="up_pass">
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="password">Repeat Password</label>
+                            <input type="password" required class="form-control" id="up_repass">
+                        </div>
+                        <div class="d-flex mb-5 mt-2 align-items-center">
+                            <span class="ml-auto"><a id="back_login" href="javascript:;" class="forgot-pass">Back to login ...</a></span>
+                        </div>
+                        <input type="submit" id="submit_up" value="Sign Up" class="btn btn-block btn-primary">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id=_modal></div>
+{% include "includes/../includes/scripts.html" %}
+<script src="/static/assets/index/js/login_main.js"></script>
+<script>
+    $(function () {
+        'use strict';
+
+        $('.form-control').on('input', function () {
+            var $field = $(this).closest('.form-group');
+            if (this.value) {
+                $field.addClass('field--not-empty');
+            } else {
+                $field.removeClass('field--not-empty');
+            }
+        });
+    });
+    let is_login = true;
+    $("#sign_up").on("click", function () {
+        is_login = false;
+        $("#sign_in_div").css("display", "none")
+        $("#sign_up_div").css("display", "block")
+    });
+
+    $("#back_login").on("click", function () {
+        is_login = true;
+        $("#sign_in_div").css("display", "block")
+        $("#sign_up_div").css('display', 'none')
+    });
+
+
+    function login(email, pass) {
+        if (email.trim().length === 0 || pass.trim().length === 0) {
+            view_error_modal('Fill missing fields');
+            return;
+        }
+        $.ajax(web.server + "/api/login/", {
+            type: 'POST',  // http method
+            contentType: "application/json",
+            data: JSON.stringify({
+                "email": email,
+                "password": pass
+            }),
+            success: function (data, status, xhr) {
+                let token = data.access;
+                if (!token) {
+                    view_error_modal("Error while getting token");
+                } else {
+                    writeCookie('token', token);
+                    window.location.replace("/");
+                }
+
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                view_error_modal("Email or password doesn't seem correct.");
+            }
+        });
+    }
+
+    $("#submit_in").on("click", function () {
+        login($("#in_email").val(), $("#in_pass").val())
+    });
+
+    $("#submit_up").on("click", function () {
+        if ($("#up_email").val().trim().length === 0 || $("#up_pass").val().trim().length === 0 || $("#up_repass").val().trim().length === 0) {
+            view_error_modal('Fill missing fields');
+            return;
+        }
+        if ($("#up_pass").val().trim().length !== $("#up_repass").val().trim().length) {
+            view_error_modal("Password and repeat password doesn't match.");
+            return;
+        }
+        $.ajax(web.server + "/api/signup/", {
+            type: 'POST',  // http method
+            contentType: "application/json",
+            data: JSON.stringify({
+                "email": $("#up_email").val(),
+                "password": $("#up_pass").val(),
+                "repeat_password": $("#up_repass").val()
+            }),
+            success: function (data, status, xhr) {
+                login($("#up_email").val().trim(), $("#up_pass").val().trim())
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                try {
+                    let responseText = jQuery.parseJSON(jqXhr.responseText);
+                    if (responseText['detail']) {
+                        view_error_modal(responseText['detail']);
+                    }
+                } catch (x) {
+                    console.log('status: ' + textStatus + ', data: ' + errorMessage);
+                }
+
+
+            }
+        });
+    });
+
+
+</script>
+
+</body>
+</html>

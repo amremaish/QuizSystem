@@ -17,14 +17,12 @@ from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
 
 from apps.users.api import views as api_views
+from apps.users.api.views import CurrentUserView
 
 urlpatterns = [
-    path('users/driver/signup/', api_views.DriverSignUpView.as_view()),
-    path('users/rest/signup/', api_views.RestaurantSignUpView.as_view()),
-    path('users/update', api_views.UpdateProfileView.as_view()),
-    path('users/current_user/', api_views.CurrentUserView.as_view()),
+
+    path('signup/', api_views.AuthView.as_view()),
     path('login/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('users/update-location/', api_views.UpdateDriverLocation.as_view()),
-    path('users/change-password/', api_views.ChangeUserPassword.as_view()),
+    path('user/', CurrentUserView.as_view(), name='user'),
 ]

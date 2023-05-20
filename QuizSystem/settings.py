@@ -46,9 +46,14 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.category',
     'apps.question',
+    'corsheaders',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -107,8 +112,8 @@ TEMPLATES = [
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=99999),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=99998),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 
@@ -182,19 +187,3 @@ STATICFILES_DIRS = (
 # CROS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-# AMS
-AWS_ACCESS_KEY_ID = 'CH5M76LA0AZSCK3QQY4N'
-AWS_SECRET_ACCESS_KEY = 'izBIGrwbcbIeSR26UhBDkQbEO237GkzaumCrbS5h'
-AWS_STORAGE_BUCKET_NAME = 'QuizSystem'
-AWS_S3_ENDPOINT_URL = 'https://s3.us-east-1.wasabisys.com'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERIFY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ENDPOINT_URI = 'https://s3.us-east-1.wasabisys.com/QuizSystem/'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'info@example.com'
-EMAIL_HOST_PASSWORD = 'secret'

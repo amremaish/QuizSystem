@@ -1,0 +1,321 @@
+{% extends 'layouts/../layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        <div class="row my-4">
+            <div class="card">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="page-header min-height-300 border-radius-xl mt-4"
+                 style="background-image: url('../../../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
+                <span class="mask bg-gradient-primary opacity-6"><h6
+                        class="text-white font-weight-bolder m-3">{{ user.user_type }}</h6></span>
+
+            </div>
+
+            <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+                <div class="row gx-4">
+                    <div class="col-auto">
+                        <div class="avatar avatar-xl position-relative">
+                            <img src="/static/assets/img/user.png" alt="profile_image"
+                                 class="w-100 border-radius-lg shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1" data-bs-toggle="tooltip" data-bs-placement="top" title="username"
+                                data-bs-original-title="Order Number">
+                                {{ user.username }}
+                            </h5>
+                            <p class="mb-0 font-weight-bold text-sm" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Joined Date" data-container="body" data-animation="true"
+                               data-bs-original-title="Created Date">
+                                {{ user.created_at }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                        <div class="nav-wrapper position-relative end-0">
+                            <ul class="nav nav-pills nav-fill p-1 bg-transparent">
+                                <li class="nav-item">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                          title="is user online" data-container="body" data-animation="true"
+                                          style="height: 30px;padding-top:10px;" class=" w-70 badge bg-gradient-info">
+                                        {% if user.is_online %}
+                                            Online
+                                        {% else %}
+                                            Offline
+                                        {% endif %}
+                                    </span>
+                                </li>
+                                <li class="nav-item">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                          title="User status" data-container="body" data-animation="true"
+                                          style="height: 30px;padding-top:10px;"
+                                          class=" w-70 badge bg-gradient-{% if user.status == 'pending' %}info{% elif user.status == 'active' %}success{% else %}danger{% endif %}">
+                                        {{ user.status }}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4" id="basic-info">
+            <div class="card-header">
+                <h5>Basic Info</h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Username</label>
+                        <div class="input-group">
+                            <input disabled name="firstName" value="{{ user.username }}"
+                                   class="form-control" type="text" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <input disabled name="firstName" value="{{ user.email }}"
+                                   class="form-control" type="text" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Phone number</label>
+                        <div class="input-group">
+                            <input disabled name="firstName" value="{{ user.phone }}"
+                                   class="form-control" type="text" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">ID</label>
+                        <div class="input-group">
+                            <input disabled name="firstName" value="{{ user.id }}"
+                                   class="form-control" type="text" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4" id="basic-info">
+            <div class="card-header">
+                <h5>Change Fields</h5>
+            </div>
+            <form action="/admin/profile/" method="post">
+                {% csrf_token %}
+                <div class="card-body pt-0">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label">Cost per order</label>
+                            <div class="input-group">
+                                <input name="cost_per_order" value="{{ user.cost_per_order }}"
+                                       class="form-control" step="0.01" type="number" placeholder="0.0"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">User status</label>
+                            <div class="input-group ">
+                                <select class="form-control" name="user_status">
+                                    {% for status in user_statues %}
+                                        <option {% if user.status == status.0 %}selected {% endif %}
+                                                value="{{ status.0 }}">{{ status.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input class="btn btn-primary" type="submit">
+                </div>
+            </form>
+        </div>
+        {% if user.user_type == 'restaurant' %}
+            <div class="card mt-4" id="restaurant-info">
+                <div class="card-header">
+                    <h5>Restaurant Info</h5>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label">Tax number</label>
+                            <div class="input-group">
+                                <input disabled name="firstName" value="{{ user.tax_number }}"
+                                       class="form-control" type="text" placeholder="Alec" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if user.user_type == 'restaurant' %}
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-1">Additional information</h6>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="mb-2 row">
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.commercial_number }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Commercial number</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if user.long %}
+                                    <div class="col-md-6">
+                                        <div class="card" style="width: 25rem; height: 100%">
+                                            <iframe style="height: 100%"
+                                                    loading="lazy"
+                                                    allowfullscreen
+                                                    referrerpolicy="no-referrer-when-downgrade"
+                                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAqQxxXqXen65Gnl78vB3mvHo75epPurbU&q={{ user.lat }},{{ user.long }}">
+                                            </iframe>
+                                            <div class="card-body">
+                                                <h5 class="card-title">Completed Location</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-1">Additional information</h6>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="mb-2 row">
+                                <div class=" col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.commercial_number }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Commercial number</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if user.long %}
+                                    <div class="col-md-6">
+                                        <div class="card" style="width: 25rem; height: 100%">
+                                            <iframe style="height: 100%"
+                                                    loading="lazy"
+                                                    allowfullscreen
+                                                    referrerpolicy="no-referrer-when-downgrade"
+                                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAqQxxXqXen65Gnl78vB3mvHo75epPurbU&q={{ user.lat }},{{ user.long }}">
+                                            </iframe>
+                                            <div class="card-body">
+                                                <h5 class="card-title">Completed Location</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-2 row">
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.driving_license }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Driving license</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.id_photo }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Driving photo</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.car_insurance }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Car insurance</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.car_registration }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Car registration</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2 row">
+                                <div class="col-md-6">
+                                    <div class="card" style="width: 25rem;">
+                                        <img class="card-img-top"
+                                             src="{{ user.social_security }}"
+                                             onerror=this.src="/static/assets/img/not-found.png">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Social security</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% include "includes/../includes/footer.html" %}
+    </div>
+    {% block bar %}
+        {% include "includes/footer.html" %}
+    {% endblock %}
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+    <script>
+        var error = "{{request.GET.error}}";
+        // Error
+        if (error.length > 0) {
+            $('#error_modal').modal('show');
+        }
+        $(".close-btn").click(function () {
+            window.location.replace(removeParam("error", window.location.href.toString()))
+        });
+    </script>
+{% endblock javascripts %}
+
