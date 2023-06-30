@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.category',
     'apps.question',
+    'apps.web',
     'corsheaders',
 ]
 CORS_ALLOWED_ORIGINS = [

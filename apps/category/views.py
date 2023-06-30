@@ -14,6 +14,7 @@ from apps.common.serializers import PageSerializer
 
 
 # Create your views here.
+from apps.question.models import Question
 
 
 class CategoryIndexView(AdminView):
@@ -45,5 +46,7 @@ class CategoryCreateUpdateView(AdminView):
 class CategoryDeleteView(AdminView):
     def post(self, request):
         data = request.POST.dict()
+        questions = Question.objects.get(category__id=data.get("id"))
+        questions.delete()
         Category.objects.get(id=data.get("id")).delete()
         return redirect("/admin/categories/")

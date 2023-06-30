@@ -9,7 +9,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Bootstrap Icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet"/>
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
@@ -31,7 +31,7 @@
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                <li class="nav-item"><a class="nav-link" href="#portfolio">Categories</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="javascript:;" id="status_login_nav">Login</a></li>
             </ul>
@@ -49,7 +49,7 @@
             <div class="col-lg-8 align-self-baseline">
                 <p class="text-white-75 mb-5">
 A quiz system is a software application for taking quizzes and tests on various subjects and topics.</p>
-                <a class="btn btn-primary btn-xl" href="#categories">Wanna try a Quiz ?</a>
+                <a class="btn btn-primary btn-xl" href="#portfolio">Wanna try a Quiz ?</a>
             </div>
         </div>
     </div>
@@ -111,63 +111,20 @@ A quiz system is a software application for taking quizzes and tests on various 
     </div>
 </section>
 <!-- Portfolio-->
-<div id="categories">
+<div id="portfolio">
     <div class="container-fluid p-0">
         <div class="row g-0">
+            {% for cat in categories %}
             <div class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
+                <a class="portfolio-box" style="cursor: pointer;" xhref="/quiz/{{ cat.id }}" title="Project Name">
                     <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
                     <div class="portfolio-box-caption">
                         <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
+                        <div class="project-name">{{ cat.name }}</div>
                     </div>
                 </a>
             </div>
-            <div class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
-                    <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
-                    <div class="portfolio-box-caption">
-                        <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
-                    <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
-                    <div class="portfolio-box-caption">
-                        <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
-                    <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
-                    <div class="portfolio-box-caption">
-                        <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
-                    </div>
-                </a>
-            </div>
-            <div style="" class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
-                    <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
-                    <div class="portfolio-box-caption">
-                        <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <a class="portfolio-box" href="/static/assets/index/assets/img/category.jpg" title="Project Name">
-                    <img class="img-fluid" src="/static/assets/index/assets/img/category.jpg" alt="..."/>
-                    <div class="portfolio-box-caption p-3">
-                        <div class="project-category text-white-50">Category</div>
-                        <div class="project-name">Project Name</div>
-                    </div>
-                </a>
-            </div>
+        {% endfor %}
         </div>
     </div>
 </div>
@@ -263,7 +220,7 @@ A quiz system is a software application for taking quizzes and tests on various 
     </div>
 </footer>
 <!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 <!-- SimpleLightbox plugin JS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
 <!-- Core theme JS-->
@@ -295,7 +252,13 @@ A quiz system is a software application for taking quizzes and tests on various 
         } else {
             window.location.replace("/login");
         }
-
+    });
+    $(".portfolio-box").on("click", function () {
+        if (tokenStatus) {
+            window.location.replace($(this).attr("xhref"));
+        } else {
+            window.location.replace("/login");
+        }
     });
 </script>
 </body>
