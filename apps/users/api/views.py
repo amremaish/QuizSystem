@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from QuizSystem import settings
 from apps.users.api import serializers
-from apps.users.models import User
+from apps.users.models import User, Message
 
 
 class AuthView(CreateAPIView):
@@ -37,3 +37,12 @@ class CurrentUserView(CreateAPIView):
 
     def get(self, request, *args, **kwargs):
         return Response({"status": status.HTTP_200_OK, "details": {"email": request.user.email}})
+
+
+class MessagesView(CreateAPIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        message = Message(**request.data)
+        message.save()
+        return Response({"status": status.HTTP_200_OK})

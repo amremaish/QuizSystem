@@ -52,3 +52,11 @@ class User(TimeStampedModel, AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+class Message(TimeStampedModel):
+    id = models.BigAutoField(primary_key=True)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(max_length=128, unique=True)
+    phone_number = models.CharField(max_length=255, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)

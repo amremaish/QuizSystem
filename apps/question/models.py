@@ -6,6 +6,7 @@ from django.db import models
 
 from apps.category.models import Category
 from apps.common.shared_models import TimeStampedModel
+from apps.users.models import User
 
 
 class Question(TimeStampedModel):
@@ -17,3 +18,10 @@ class Question(TimeStampedModel):
     choice_3 = models.TextField()
     choice_4 = models.TextField()
     answer_number = models.IntegerField()
+
+
+class Quiz(TimeStampedModel):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    right_answers = models.IntegerField()
+    wrong_answers = models.IntegerField()
