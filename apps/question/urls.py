@@ -10,6 +10,8 @@ from apps.question.views import *
 urlpatterns = [
 
     path('questions/', QuestionIndexView.as_view()),
+    path('quizzes/', QuizzesIndexView.as_view()),
     path('questions/create-update/', QuestionCreateUpdateView.as_view()),
     path('questions/delete/', QuestionDeleteView.as_view()),
+    path('quizzes/delete/', QuizzesDeleteView.as_view()),
 ]

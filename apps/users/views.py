@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 
 from .forms import LoginForm
-from .models import User
+from .models import User, Message
 from ..common.AdminView import AdminView
 from ..common.serializers import PageSerializer
 
@@ -59,5 +59,21 @@ class UsersView(AdminView):
                     'size': serializer.data.get('size'),
                     'q': serializer.data.get('q'),
                     'segment': 'users'
+                }
+                , request))
+
+
+class ContactsIndexView(AdminView):
+    def get(self, request):
+        serializer = PageSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        paginator = Paginator(Message.objects.all(), serializer.data.get('size'))
+        page_obj = paginator.get_page(serializer.data.get('page'))
+        return HttpResponse(
+            loader.get_template('users/contacts.html').render(
+                {
+                    'page_obj': page_obj,
+                    'q': serializer.data.get('q'),
+                    'segment': 'contacts'
                 }
                 , request))

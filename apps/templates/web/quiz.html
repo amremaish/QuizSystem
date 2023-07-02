@@ -35,7 +35,7 @@
 </head>
 
 <body translate="no">
-<div class="container-fluid">
+<div id = "content" class="container-fluid">
     <div class="jumbotron" style="padding:30px; margin-top: 10px; background: #454A4F">
         <div class="d-flex justify-content-between">
             <div>
@@ -133,6 +133,13 @@
 </body>
 
 <script>
+      let all = $(".question").map(function () {
+            return this.id;
+        }).get();
+      if (all.length === 0 ) {
+          $("#content").remove();
+        view_error_link_modal("No Questions in this category" , "/" , "back");
+      }
     $(function () {
         $('.timer').startTimer({
             onComplete: function (element) {

@@ -21,4 +21,5 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('users/', UsersView.as_view(), name='users'),
+    path('contacts/', ContactsIndexView.as_view(), name='contacts'),
 ]

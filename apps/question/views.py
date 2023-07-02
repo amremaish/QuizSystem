@@ -13,7 +13,7 @@ from apps.common.AdminView import AdminView
 from apps.common.serializers import PageSerializer
 
 # Create your views here.
-from apps.question.models import Question
+from apps.question.models import Question, Quiz
 
 
 class QuestionIndexView(AdminView):
@@ -49,3 +49,26 @@ class QuestionDeleteView(AdminView):
         data = request.POST.dict()
         Question.objects.get(id=data.get("id")).delete()
         return redirect("/admin/questions/")
+
+
+class QuizzesIndexView(AdminView):
+    def get(self, request):
+        serializer = PageSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        paginator = Paginator(Quiz.objects.all(), serializer.data.get('size'))
+        page_obj = paginator.get_page(serializer.data.get('page'))
+        return HttpResponse(
+            loader.get_template('questions/quizzes.html').render(
+                {
+                    'page_obj': page_obj,
+                    'q': serializer.data.get('q'),
+                    'segment': 'quiz'
+                }
+                , request))
+
+
+class QuizzesDeleteView(AdminView):
+    def post(self, request):
+        data = request.POST.dict()
+        Quiz.objects.get(id=data.get("id")).delete()
+        return redirect("/admin/quizzes/")
